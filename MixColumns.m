@@ -1,0 +1,31 @@
+function r = MixColumns(s)
+for i= 0:3
+    t(i+1,1:8) = [s(1,2*i+1:2*i+2),s(2,2*i+1:2*i+2),s(3,2*i+1:2*i+2),s(4,2*i+1:2*i+2)];
+end;
+for j = 1:4
+    a=GaloisMultLU(t(j,1:2),2);
+    b=GaloisMultLU(t(j,3:4),3);
+    c = xor(hexToBinaryVector(a(1:2),8),hexToBinaryVector(b(1:2),8));
+    d= xor(c,hexToBinaryVector(t(j,5:6),8));
+    e = xor(d, hexToBinaryVector(t(j,7:8),8));
+    ret(1,2*j-1:2*j) = binaryVectorToHex(e);
+    a = GaloisMultLU(t(j,3:4),2);
+    b = GaloisMultLU(t(j,5:6),3);
+    c = xor(hexToBinaryVector(t(j,1:2),8),hexToBinaryVector(a(1:2),8));
+    d = xor(c,hexToBinaryVector(b(1:2),8));
+    e = xor(d,hexToBinaryVector(t(j,7:8),8));
+    ret(2,2*j-1:2*j) = binaryVectorToHex(e);
+    a = GaloisMultLU(t(j,5:6),2);
+    b = GaloisMultLU(t(j,7:8),3);
+    c = xor(hexToBinaryVector(t(j,1:2),8),hexToBinaryVector(t(j,3:4),8));
+    d = xor(c, hexToBinaryVector(a(1:2),8));
+    e = xor(d, hexToBinaryVector(b(1:2),8));
+    ret(3,2*j-1:2*j) = binaryVectorToHex(e);
+    a = GaloisMultLU(t(j,1:2),3);
+    b = GaloisMultLU(t(j,7:8),2);
+    c = xor(hexToBinaryVector(t(j,3:4),8),hexToBinaryVector(t(j,5:6),8));
+    d = xor(c, hexToBinaryVector(a(1:2),8));
+    e = xor(d, hexToBinaryVector(b(1:2),8));
+    ret(4,2*j-1:2*j) = binaryVectorToHex(e);
+end;
+r = ret;
